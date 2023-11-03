@@ -12,7 +12,7 @@ module.exports = (app) => {
     router.get('/seguimiento/piezas', controlador.seguimientoPiezas);
 
     // Buscamos la linea y zona de una pieza.
-    router.get('/buscar/lineaZona', controlador.buscarLineaZona);
+    router.get('/buscar/pieza', controlador.buscarPieza);
 
     // Ruta general de Lineas.
     app.use(process.env.API_URL + "dashboard", router);
