@@ -101,3 +101,66 @@ exports.seguimientoPiezas = async(request, respuesta) => {
         });
     }
 };
+
+// Consulta la linea y zona donde se encuentra la pieza dada.
+exports.buscarLineaZona = async(request, respuesta) => {
+    // GET Request.
+    const headers = request.headers;
+    const cuerpo = request.body;
+    const parametros = request.params;
+    const consulta = request.query;
+
+    try {
+        // Recuperamos los datos de la consulta.
+        const dataMatrix = consulta.dataMatrix;
+
+        // Buscamos en la base de datos el registro de la pieza.
+        const piezas = await Piezas.findAll({
+            where: {
+                dataMatrix: {
+                    [Op.substring]: dataMatrix
+                },
+                idZonaActualVinculada: {
+                    [Op.not]: null
+                }
+            },
+            include: [
+                {
+                    model: Zonas,
+                    include: [{
+                        model: Lineas
+                    }]
+                },
+                {
+                    model: TiposPieza
+                }
+            ]
+        });
+
+        // Datos encontrados de la consulta.
+        const datosEncontrados = Object();
+
+        // Por cada pieza encontrada con una coincidencia.
+        for(let i = 0; i < piezas.length; i++) {
+            const pieza = piezas[i].dataValues;
+            const zona = pieza.zona.dataValues;
+            const linea = zona.linea.dataValues;
+
+            // Se guarda la linea
+        }
+
+        // Retornamos los registros encontrados.
+        return respuesta.status(200).json({
+            codigoRespuesta: CODIGOS.OK,
+        });
+
+    } catch(excepcion) {
+        // Mostramos el error en la consola
+        console.log(excepcion);
+
+        // Retornamos un codigo de error.
+        return respuesta.status(500).send({
+            codigoRespuesta: CODIGOS.API_ERROR,
+        });
+    }
+};
