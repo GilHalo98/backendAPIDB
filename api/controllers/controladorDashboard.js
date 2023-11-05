@@ -63,25 +63,19 @@ exports.seguimientoPiezas = async(request, respuesta) => {
                 model: Piezas,
                 include: [
                     {
-                        attributes: ['id'],
-                        model: Statuses,
-                        include: [
-                            {
-                                attributes: ['nombreEstado'],
-                                model: EstadosStatus
-                            },
-                            {
-                                attributes: ['descripcionTipoStatus'],
-                                model: TiposStatus
-                            }
-                        ]
-                    },
-                    {
                         attributes: ['descripcionTipoPieza'],
                         model: TiposPieza
+                    },
+                    {
+                        model: Reportes,
+                        attributes: ['descripcionReporte', 'fechaRegistroReporte'],
+                        include: [{
+                            model: TiposReporte,
+                            attributes: ['descripcionTipoReporte'],
+                        }]
                     }
                 ]
-            }]
+            }],
         });
 
         // Retornamos los registros encontrados.
@@ -103,7 +97,7 @@ exports.seguimientoPiezas = async(request, respuesta) => {
 };
 
 // Consulta la linea y zona donde se encuentra la pieza dada.
-exports.buscarLineaZona = async(request, respuesta) => {
+exports.buscarPieza = async(request, respuesta) => {
     // GET Request.
     const headers = request.headers;
     const cuerpo = request.body;
@@ -114,8 +108,16 @@ exports.buscarLineaZona = async(request, respuesta) => {
         // Recuperamos los datos de la consulta.
         const dataMatrix = consulta.dataMatrix;
 
+        // Verificamos que los datos de la busqueda esten completos.
+        if(!dataMatrix) {
+            return respuesta.status(200).json({
+                codigoRespuesta: CODIGOS.DATOS_BUSQUEDA_INCOMPLETOS,
+            });
+        }
+
         // Buscamos en la base de datos el registro de la pieza.
-        const piezas = await Piezas.findAll({
+        const pieza = await Piezas.findOne({
+            attributes: ['id', 'dataMatrix'],
             where: {
                 dataMatrix: {
                     [Op.substring]: dataMatrix
@@ -127,31 +129,31 @@ exports.buscarLineaZona = async(request, respuesta) => {
             include: [
                 {
                     model: Zonas,
+                    attributes: ['nombreZona'],
                     include: [{
-                        model: Lineas
+                        model: Lineas,
+                        attributes: ['nombreLinea'],
                     }]
                 },
                 {
-                    model: TiposPieza
+                    model: TiposPieza,
+                    attributes: ['descripcionTipoPieza'],
+                },
+                {
+                    model: Reportes,
+                    attributes: ['descripcionReporte'],
+                    include: [{
+                        model: TiposReporte,
+                        attributes: ['descripcionTipoReporte'],
+                    }]
                 }
-            ]
+            ],
         });
-
-        // Datos encontrados de la consulta.
-        const datosEncontrados = Object();
-
-        // Por cada pieza encontrada con una coincidencia.
-        for(let i = 0; i < piezas.length; i++) {
-            const pieza = piezas[i].dataValues;
-            const zona = pieza.zona.dataValues;
-            const linea = zona.linea.dataValues;
-
-            // Se guarda la linea
-        }
 
         // Retornamos los registros encontrados.
         return respuesta.status(200).json({
             codigoRespuesta: CODIGOS.OK,
+            registro: pieza,
         });
 
     } catch(excepcion) {
