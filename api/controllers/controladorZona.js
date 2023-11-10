@@ -280,7 +280,7 @@ exports.deleteZona = async(request, respuesta) => {
         }
 
         // Busca el registro dado el id.
-        const zona = await Zoans.findOne({
+        const zona = await Zonas.findOne({
             where: {
                 id: id
             }

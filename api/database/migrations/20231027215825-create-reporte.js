@@ -28,6 +28,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         required: true,
         allowNull: false,
+        onDelete: 'cascade',
         references: {
             model: {
                 tableName: "piezas",
@@ -40,6 +41,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         required: true,
         allowNull: false,
+        onDelete: 'cascade',
         references: {
             model: {
                 tableName: "zonas",
@@ -52,6 +54,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         required: true,
         allowNull: false,
+        onDelete: 'cascade',
         references: {
             model: {
                 tableName: "tiposReportes",

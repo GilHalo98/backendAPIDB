@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       estadoStatus.hasMany(
         models.status,
-        { foreignKey: 'idEstadoVinculado' }
+        { foreignKey: 'idEstadoVinculado', onDelete: 'cascade' }
       )
     }
   }
