@@ -23,7 +23,7 @@ const Reportes = db.reporte;
 
 // Consulta de seguimiento de piezas por zona en una linea dada.
 exports.seguimientoPiezas = async(request, respuesta) => {
-    // PUT Request.
+    // GET Request.
     const headers = request.headers;
     const cuerpo = request.body;
     const parametros = request.params;
