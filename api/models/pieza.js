@@ -17,17 +17,17 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       pieza.hasMany(
         models.reporte,
-        {foreignKey: 'idPiezaVinculada'}
+        { foreignKey: 'idPiezaVinculada', onDelete: 'cascade' }
       )
 
       pieza.belongsTo(
         models.tipoPieza,
-        { foreignKey: 'idTipoPiezaVinculada' }
+        { foreignKey: 'idTipoPiezaVinculada', onDelete: 'cascade' }
       )
 
       pieza.belongsTo(
         models.zona,
-        { foreignKey: 'idZonaActualVinculada' }
+        { foreignKey: 'idZonaActualVinculada', onDelete: 'cascade' }
       )
 
       pieza.hasMany(

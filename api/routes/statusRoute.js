@@ -20,7 +20,6 @@ module.exports = (app) => {
     // Elimina un registro de empleado de la DB.
     router.delete('/eliminar', controlador.deleteStatus);
 
-
     // Ruta general de usaurios.
     app.use(process.env.API_URL + "status", router);
 };

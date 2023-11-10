@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       tipoPieza.hasMany(
         models.pieza,
-        { foreignKey: 'idTipoPiezaVinculada' }
+        { foreignKey: 'idTipoPiezaVinculada', onDelete: 'cascade' }
       )
     }
   }

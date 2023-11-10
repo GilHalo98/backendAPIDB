@@ -32,6 +32,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         required: true,
         allowNull: false,
+        onDelete: 'cascade',
         references: {
             model: {
                 tableName: "lineas",

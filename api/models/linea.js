@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       linea.hasMany(
         models.zona,
-        { foreignKey: 'idLineaVinculada' }
+        { foreignKey: 'idLineaVinculada', onDelete: 'cascade' }
       )
     }
   }

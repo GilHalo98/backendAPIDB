@@ -17,17 +17,17 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       status.belongsTo(
         models.estadoStatus,
-        { foreignKey: 'idEstadoVinculado' }
+        { foreignKey: 'idEstadoVinculado', onDelete: 'cascade' }
       )
 
       status.belongsTo(
         models.tipoStatus,
-        { foreignKey: 'idTipoStatusVinculado' }
+        { foreignKey: 'idTipoStatusVinculado', onDelete: 'cascade' }
       )
 
       status.belongsTo(
         models.pieza,
-        { foreignKey: 'idPiezaStatusVinculada' }
+        { foreignKey: 'idPiezaStatusVinculada', onDelete: 'cascade' }
       )
     }
   }
